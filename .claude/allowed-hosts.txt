@@ -6,3 +6,15 @@
 #
 # Thêm host production thật của project vào đây SAU KHI user xác nhận.
 github.com
+airflow.apache.org
+bird-bench.github.io
+debezium.io
+docs.langchain.com
+duckdb.org
+grafana.com
+iceberg.apache.org
+kafka.apache.org
+kind.sigs.k8s.io
+minikube.sigs.k8s.io
+prometheus.io
+spider2-sql.github.io
