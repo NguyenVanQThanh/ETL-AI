@@ -19,6 +19,7 @@ logs/
 # Docker volumes / data
 pgdata/
 data/raw/
+ingest/data/
 
 # Airflow
 airflow/logs/

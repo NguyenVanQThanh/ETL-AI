@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "olist-postgres": {
+      "command": "bash",
+      "args": ["ingest/mcp-postgres.sh"]
+    }
+  }
+}
