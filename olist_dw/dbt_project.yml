@@ -1,0 +1,9 @@
+name: olist_dw
+version: "1.0.0"
+profile: olist_dw
+model-paths: ["models"]
+
+models:
+  olist_dw:
+    staging:
+      +materialized: view

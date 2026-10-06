@@ -27,7 +27,7 @@ Không cắt nội dung gốc — mọi phần trong roadmap ban đầu (SCD2, R
 | # | Buổi | Nội dung | Trạng thái |
 |---|---|---|---|
 | 1 | P1.S1 | Docker Postgres + ingest Olist vào `raw` | ✅ |
-| 2 | P1.S2 | dbt staging | ⬜ |
+| 2 | P1.S2 | dbt staging | ✅ |
 | 3 | P1.S3 | dbt marts — star schema | ⬜ |
 | 4 | P1.S4 | dbt tests + docs | ⬜ |
 | 5 | P1.S5 | SQL thực hành trên mart (window functions, CTE...) | ⬜ |
@@ -50,7 +50,7 @@ Không cắt nội dung gốc — mọi phần trong roadmap ban đầu (SCD2, R
 - [x] Idempotent: `df.to_sql(if_exists="replace")` — drop+recreate mỗi lần chạy (thay vì TRUNCATE)
 - [x] **Output:** `docker compose up` + `python ingest.py` ra data trong `raw` — verify qua `docker exec psql`, row count khớp log
 
-### P1.S2 — dbt staging · ⬜
+### P1.S2 — dbt staging · ✅
 - [ ] `dbt init`, `profiles.yml` trỏ Postgres
 - [ ] Model `stg_*`: orders, customers, order_items, products, sellers, reviews
 - [ ] Dùng `source()` + `ref()` đúng chuẩn
@@ -237,6 +237,7 @@ Không cắt nội dung gốc — mọi phần trong roadmap ban đầu (SCD2, R
 | Ngày | Phase.Buổi | Đã làm | Vướng mắc | Tiếp theo |
 |---|---|---|---|---|
 | 2026-09-26 | P1.S1 | `docker-compose.yml` + `config.py` + `ingest.py` (pandas.to_sql, schema `raw`), verify row count qua `docker exec psql` | Fix dọc đường: connection URL thiếu URL-encode (password chứa `@`), path CSV sai (`data/olist/`), TRUNCATE trên bảng chưa tồn tại | P1.S2 — dbt staging |
+| 2026-10-06 | P1.S2 | `olist_dw/` dbt project: 9 source + 9 `stg_*` view (schema `staging`), `ingest.py` đổi `dtype=str`; `dbt run` PASS=9, `dbt docs generate` OK | Spec thiếu 3 bảng + sai tên `reviews`; zip mất số 0 (pandas int); cột ngày là text → `nullif` + cast | P1.S3 — dbt marts (star schema) |
 | | | | | |
 
 ---

@@ -1,0 +1,12 @@
+olist_dw:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5433
+      user: "{{ env_var('DBT_PG_USER', 'olist') }}"
+      password: "{{ env_var('DBT_PG_PASSWORD') }}"
+      dbname: olist
+      schema: staging
+      threads: 4

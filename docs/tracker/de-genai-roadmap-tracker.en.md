@@ -26,8 +26,8 @@ Nothing from the original scope is cut — every part of the initial roadmap (SC
 
 | # | Session | Content | Status |
 |---|---|---|---|
-| 1 | P1.S1 | Docker Postgres + ingest Olist into `raw` | ⬜ |
-| 2 | P1.S2 | dbt staging | ⬜ |
+| 1 | P1.S1 | Docker Postgres + ingest Olist into `raw` | ✅ |
+| 2 | P1.S2 | dbt staging | ✅ |
 | 3 | P1.S3 | dbt marts — star schema | ⬜ |
 | 4 | P1.S4 | dbt tests + docs | ⬜ |
 | 5 | P1.S5 | SQL practice on marts (window functions, CTEs...) | ⬜ |
@@ -50,7 +50,7 @@ Nothing from the original scope is cut — every part of the initial roadmap (SC
 - [ ] Idempotent: `TRUNCATE` before reload
 - [ ] **Output:** `docker compose up` + `python ingest.py` populates `raw`
 
-### P1.S2 — dbt staging · ⬜
+### P1.S2 — dbt staging · ✅
 - [ ] `dbt init`, `profiles.yml` pointing at Postgres
 - [ ] `stg_*` models: orders, customers, order_items, products, sellers, reviews
 - [ ] Proper `source()` + `ref()` usage

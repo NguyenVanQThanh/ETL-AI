@@ -2,3 +2,5 @@ python-dotenv
 psycopg2-binary
 pandas
 sqlalchemy
+dbt-core 
+dbt-postgres

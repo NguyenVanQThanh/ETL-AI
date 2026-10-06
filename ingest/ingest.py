@@ -4,7 +4,7 @@ Description: Ingest Olist CSV files into Postgres schema `raw` (idempotent, P1.S
 
 Created at:  2026-09-26
 Created by:  claude
-Updated at:  2026-09-26
+Updated at:  2026-10-03
 Updated by:  thanh
 """
 import os
@@ -50,7 +50,7 @@ CSV_TABLE_MAP = {
 
 def load_csv_to_table(conn, csv_path: str, table_name: str) -> None:
     # Read CSV, write into raw.<table_name> (df.to_sql or COPY)
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, dtype=str)
     engine = create_engine(
         f"postgresql+psycopg2://{quote_plus(conn.info.user)}:{quote_plus(conn.info.password)}"
         f"@{conn.info.host}:{conn.info.port}/{conn.info.dbname}"
