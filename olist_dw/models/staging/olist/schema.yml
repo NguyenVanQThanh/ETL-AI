@@ -1,0 +1,43 @@
+# File:        schema.yml
+# Description: Data tests for staging models (keys + known data-quality caveats)
+#
+# Created at:  2026-10-08
+# Created by:  claude
+# Updated at:  2026-10-08
+# Updated by:  claude
+
+version: 2
+
+models:
+  - name: stg_orders
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+
+  - name: stg_order_items
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [order_id, order_item_seq]
+
+  - name: stg_order_payments
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [order_id, payment_seq]
+
+  - name: stg_product_category_translation
+    columns:
+      - name: category_name
+        data_tests: [unique, not_null]
+
+  - name: stg_order_reviews
+    columns:
+      - name: order_id
+        data_tests: [not_null]
+      - name: review_id
+        data_tests:
+          # Olist source has ~800 duplicated review_id (same review linked to several orders); accepted, so warn only.
+          - unique:
+              config:
+                severity: warn

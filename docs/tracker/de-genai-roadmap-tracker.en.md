@@ -29,7 +29,7 @@ Nothing from the original scope is cut — every part of the initial roadmap (SC
 | 1 | P1.S1 | Docker Postgres + ingest Olist into `raw` | ✅ |
 | 2 | P1.S2 | dbt staging | ✅ |
 | 3 | P1.S3 | dbt marts — star schema | ✅ |
-| 4 | P1.S4 | dbt tests + docs | ⬜ |
+| 4 | P1.S4 | dbt tests + docs | ✅ |
 | 5 | P1.S5 | SQL practice on marts (window functions, CTEs...) | ⬜ |
 | 6 | P1.S6 | Semantic layer + 20-question eval set | ⬜ |
 | 7 | P1.S7 | Text-to-SQL A1 — baseline full-schema prompt | ⬜ |
@@ -61,7 +61,7 @@ Nothing from the original scope is cut — every part of the initial roadmap (SC
 - [ ] SCD Type 1 (overwrite) at this stage — SCD2 is its own step in P1.S14
 - [ ] **Output:** `marts` schema is directly queryable
 
-### P1.S4 — dbt tests + docs · ⬜
+### P1.S4 — dbt tests + docs · ✅
 - [ ] `unique` + `not_null` tests on every mart's primary key
 - [ ] `relationships` test for `fact_orders` foreign keys
 - [ ] `dbt docs generate` — feeds the data dictionary in P1.S6
@@ -236,7 +236,10 @@ Nothing from the original scope is cut — every part of the initial roadmap (SC
 
 | Date | Phase.Session | Done | Blockers | Next |
 |---|---|---|---|---|
-| | | | | |
+| 2026-09-26 | P1.S1 | `docker-compose.yml` + `config.py` + `ingest.py` (pandas.to_sql, schema `raw`), row counts verified via `docker exec psql` | URL-encode password containing `@`, wrong CSV path (`data/olist/`), TRUNCATE on missing table | P1.S2 — dbt staging |
+| 2026-10-06 | P1.S2 | `olist_dw/` dbt project: 9 sources + 9 `stg_*` views (schema `staging`), `ingest.py` now `dtype=str`; `dbt run` PASS=9 | Spec missed 3 tables and misnamed `reviews`; zip codes lost leading zeros (pandas int); date columns are text, so `nullif` + cast | P1.S3 — dbt marts (star schema) |
+| 2026-10-08 | P1.S3 | 4 dims + `fact_orders` (grain = order_item) in schema `marts`, `dbt_utils`, macro `generate_schema_name`; fact 112650 = stg, 0 orphan FKs | No `quantity` column, so amount = price + freight; schema came out as `staging_marts` | P1.S4 — dbt tests + docs |
+| 2026-10-08 | P1.S4 | `schema.yml` for marts + staging: unique / not_null / relationships / accepted_values + grain tests; `dbt test` PASS=33 WARN=1 ERROR=0 (34 tests); docs generate OK | `review_id` duplicated in Olist source, set to `severity: warn`; test params use `arguments:` in dbt 1.12 | P1.S5 — SQL practice on marts |
 | | | | | |
 
 ---

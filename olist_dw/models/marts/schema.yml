@@ -1,0 +1,94 @@
+# File:        schema.yml
+# Description: Docs + data tests for marts (4 dims + fact_orders)
+#
+# Created at:  2026-10-08
+# Created by:  claude
+# Updated at:  2026-10-08
+# Updated by:  claude
+
+version: 2
+
+models:
+  - name: dim_customer
+    description: One row per customer_id (SCD1). customer_unique_id identifies the real person.
+    columns:
+      - name: customer_key
+        description: Surrogate key (hash of customer_id).
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests: [unique, not_null]
+
+  - name: dim_product
+    description: One row per product, with English category name.
+    columns:
+      - name: product_key
+        description: Surrogate key (hash of product_id).
+        data_tests: [unique, not_null]
+      - name: product_id
+        data_tests: [unique, not_null]
+
+  - name: dim_seller
+    description: One row per seller (SCD1).
+    columns:
+      - name: seller_key
+        description: Surrogate key (hash of seller_id).
+        data_tests: [unique, not_null]
+      - name: seller_id
+        data_tests: [unique, not_null]
+
+  - name: dim_date
+    description: One row per calendar day, 2016-01-01 to 2018-12-31.
+    columns:
+      - name: date_key
+        description: Integer YYYYMMDD.
+        data_tests: [unique, not_null]
+      - name: day_of_week
+        description: ISO day of week, 1 = Monday.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7]
+              quote: false
+
+  - name: fact_orders
+    description: "Grain: one row per order item. amount = price + freight_value."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [order_id, order_item_seq]
+    columns:
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: seller_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_seller')
+                field: seller_key
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: order_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [delivered, shipped, canceled, unavailable, invoiced, processing, created, approved]
+      - name: price
+        data_tests: [not_null]

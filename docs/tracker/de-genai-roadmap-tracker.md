@@ -29,7 +29,7 @@ Không cắt nội dung gốc — mọi phần trong roadmap ban đầu (SCD2, R
 | 1 | P1.S1 | Docker Postgres + ingest Olist vào `raw` | ✅ |
 | 2 | P1.S2 | dbt staging | ✅ |
 | 3 | P1.S3 | dbt marts — star schema | ✅ |
-| 4 | P1.S4 | dbt tests + docs | ⬜ |
+| 4 | P1.S4 | dbt tests + docs | ✅ |
 | 5 | P1.S5 | SQL thực hành trên mart (window functions, CTE...) | ⬜ |
 | 6 | P1.S6 | Semantic layer + eval set 20 câu | ⬜ |
 | 7 | P1.S7 | Text-to-SQL A1 — baseline full-schema prompt | ⬜ |
@@ -61,7 +61,7 @@ Không cắt nội dung gốc — mọi phần trong roadmap ban đầu (SCD2, R
 - [ ] SCD Type 1 (ghi đè) ở bước này — SCD2 làm riêng ở P1.S14
 - [ ] **Output:** schema `marts` query được trực tiếp
 
-### P1.S4 — dbt tests + docs · ⬜
+### P1.S4 — dbt tests + docs · ✅
 - [ ] Test `unique` + `not_null` trên khóa chính mọi bảng mart
 - [ ] Test `relationships` cho khóa ngoại `fact_orders`
 - [ ] `dbt docs generate` — nuôi data dictionary ở P1.S6
@@ -239,6 +239,7 @@ Không cắt nội dung gốc — mọi phần trong roadmap ban đầu (SCD2, R
 | 2026-09-26 | P1.S1 | `docker-compose.yml` + `config.py` + `ingest.py` (pandas.to_sql, schema `raw`), verify row count qua `docker exec psql` | Fix dọc đường: connection URL thiếu URL-encode (password chứa `@`), path CSV sai (`data/olist/`), TRUNCATE trên bảng chưa tồn tại | P1.S2 — dbt staging |
 | 2026-10-06 | P1.S2 | `olist_dw/` dbt project: 9 source + 9 `stg_*` view (schema `staging`), `ingest.py` đổi `dtype=str`; `dbt run` PASS=9, `dbt docs generate` OK | Spec thiếu 3 bảng + sai tên `reviews`; zip mất số 0 (pandas int); cột ngày là text → `nullif` + cast | P1.S3 — dbt marts (star schema) |
 | 2026-10-08 | P1.S3 | 4 dim + `fact_orders` (grain = order_item) schema `marts`, `dbt_utils`, macro `generate_schema_name`; fact 112650 = stg, 0 orphan FK | `quantity` không tồn tại → amount = price+freight; schema `staging_marts` | P1.S4 — dbt tests + docs |
+| 2026-10-08 | P1.S4 | `schema.yml` marts + staging: unique/not_null/relationships/accepted_values + grain test; `dbt test` PASS=33 WARN=1 ERROR=0 (34 test, marts + staging); docs generate OK | `review_id` trùng (Olist) → `severity: warn`; tham số test dùng `arguments:` | P1.S5 — SQL thực hành trên mart |
 | | | | | |
 
 ---
