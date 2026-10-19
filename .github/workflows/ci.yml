@@ -1,0 +1,24 @@
+# Minimal gate for a SQL-only repo. Job name `check` must match the ruleset's required status check.
+# ponytail: only verifies each .sql file has executable text, not that it runs. Add a SQL linter or a DB test when the repo grows.
+name: ci
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Every .sql file has at least one non-comment line
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            if ! grep -Eqv '^\s*(--.*)?$' "$f"; then
+              echo "::error file=$f::only comments or empty, no executable SQL"
+              fail=1
+            fi
+          done < <(git ls-files '*.sql')
+          exit $fail
